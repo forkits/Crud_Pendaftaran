@@ -1,6 +1,15 @@
 const express = require('express');
 const mysql = require('mysql');
 
+const app = express();
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.use(express.urlencoded({
+  extended: true
+}));
+
 // create connetion
 const db = mysql.createConnection({
     host: 'localhost',
@@ -17,7 +26,10 @@ db.connect((err) => {
     console.log('mysql connected ...');
 })
 
-const app = express();
+// home
+app.get('/', (req,res) => {
+    res.render('index.html')
+});
 
 // create db
 app.get('/createdb', (req, res) =>{
@@ -33,21 +45,28 @@ app.get('/createdb', (req, res) =>{
 
 // create table
 app.get('/createpoststable', (req,res)=>{
-    let sql = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY (id))';
+    let sql = 'CREATE TABLE peserta(id int AUTO_INCREMENT, nama_peserta VARCHAR(255), no_hp VARCHAR(255), nama_sekolah VARCHAR(255), PRIMARY KEY (id))';
     db.query(sql,(err, result)=>{
         if(err) {
             console.log(err);
         }
         console.log(result);
-        res.send('posts table created...');
+        res.send('Peserta table created...');
     });
 });
 
 // insert post 1
-app.get('/addpost',(req,res)=>{
-    let post = {title:'data', body: 'ini pertama'};
-    let sql = 'INSERT INTO posts SET ?';
-    let query = db.query(sql, post, (err, result)=>{
+
+const users = []
+app.post('/addpost',(req,res)=>{
+    // let post = {nama_peserta:'a', no_hp:'000', nama_sekolah:'sekolah a'};
+    users.push({
+        nama_peserta: req.body.name,
+        no_hp: req.body.no_hp,
+        nama_sekolah: req.body.name_sch
+    })
+    let sql = 'INSERT INTO peserta SET ?';
+    let query = db.query(sql, users, (err, result)=>{
         if(err) {
             console.log(err);
         }
