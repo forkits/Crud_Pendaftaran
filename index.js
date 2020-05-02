@@ -45,7 +45,7 @@ app.get('/createdb', (req, res) =>{
 
 // create table
 app.get('/createpoststable', (req,res)=>{
-    let sql = 'CREATE TABLE peserta(id int AUTO_INCREMENT, nama_peserta VARCHAR(255), no_hp VARCHAR(255), nama_sekolah VARCHAR(255), PRIMARY KEY (id))';
+    let sql = 'CREATE TABLE posts(id int(4) zerofill not null AUTO_INCREMENT, nama_peserta VARCHAR(255), no_hp VARCHAR(255), nama_sekolah VARCHAR(255), no_peserta VARCHAR(255), PRIMARY KEY (id))';
     db.query(sql,(err, result)=>{
         if(err) {
             console.log(err);
@@ -59,13 +59,12 @@ app.get('/createpoststable', (req,res)=>{
 
 const users = []
 app.post('/addpost',(req,res)=>{
-    // let post = {nama_peserta:'a', no_hp:'000', nama_sekolah:'sekolah a'};
     users.push({
         nama_peserta: req.body.name,
         no_hp: req.body.no_hp,
         nama_sekolah: req.body.name_sch
     })
-    let sql = 'INSERT INTO peserta SET ?';
+    let sql = 'INSERT INTO posts SET ?';
     let query = db.query(sql, users, (err, result)=>{
         if(err) {
             console.log(err);
@@ -82,9 +81,13 @@ app.get('/getposts',(req,res)=>{
         if(err) {
             console.log(err);
         }
-        console.log(results);
-        res.json();
-        // res.send('get the posts');
+        // console.log(results);
+        res.json(results);
+
+        // results.forEach((row) => {
+        //     console.log(`${row.id} dengan nama ${row.nama_peserta}`);
+            // res.send(`${row.id}`);
+        // });
     });
 });
 
