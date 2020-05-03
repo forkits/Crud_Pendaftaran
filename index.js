@@ -1,14 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const app = express();
 
+
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 // create connetion
 const db = mysql.createConnection({
@@ -45,7 +52,7 @@ app.get('/createdb', (req, res) =>{
 
 // create table
 app.get('/createpoststable', (req,res)=>{
-    let sql = 'CREATE TABLE posts(id int(4) zerofill not null AUTO_INCREMENT, nama_peserta VARCHAR(255), no_hp VARCHAR(255), nama_sekolah VARCHAR(255), no_peserta VARCHAR(255), PRIMARY KEY (id))';
+    let sql = 'CREATE TABLE posts(id int(4) zerofill not null AUTO_INCREMENT, nama_peserta VARCHAR(255), nama_sekolah VARCHAR(255), no_hp VARCHAR(255), no_nisn VARCHAR(255), PRIMARY KEY (id))';
     db.query(sql,(err, result)=>{
         if(err) {
             console.log(err);
@@ -57,20 +64,22 @@ app.get('/createpoststable', (req,res)=>{
 
 // insert post 1
 
-const users = []
-app.post('/addpost',(req,res)=>{
-    users.push({
+let users = [];
+app.post('/addpost',urlencodedParser,(req,res)=>{
+    users = ({
         nama_peserta: req.body.name,
+        nama_sekolah: req.body.name_sch,
         no_hp: req.body.no_hp,
-        nama_sekolah: req.body.name_sch
-    })
+        no_nisn: req.body.no_nisn
+    });
     let sql = 'INSERT INTO posts SET ?';
     let query = db.query(sql, users, (err, result)=>{
         if(err) {
             console.log(err);
         }
         console.log(result);
-        res.send("post berhasil")
+        console.log(users)
+        res.send(users)
     });
 });
 
@@ -81,13 +90,7 @@ app.get('/getposts',(req,res)=>{
         if(err) {
             console.log(err);
         }
-        // console.log(results);
         res.json(results);
-
-        // results.forEach((row) => {
-        //     console.log(`${row.id} dengan nama ${row.nama_peserta}`);
-            // res.send(`${row.id}`);
-        // });
     });
 });
 
