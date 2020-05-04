@@ -4,30 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-    <form action="/addpost" method="POST">
-        <div>
-            <label for="name">Nama</label>
-            <input id="name" type="text" name="name" placeholder="Nama Anda">
-        </div>
-        <div>
-            <label for="name_sch">Asal Sekolah</label>
-            <input id="name_sch" type="text" name="name_sch" placeholder="Nama Sekolah">
-        </div>
-        <div>
-            <label for="no_hp">Nomor HP</label>
-            <input id="no_hp" type="text" name="no_hp" placeholder="Nomor Handphone">
-        </div>
-        <div>
-            <label for="no_nisn">Nomor NISN</label>
-            <input id="no_nisn" type="text" name="no_nisn" placeholder="Nomor NISN">
-        </div>
-        <button type="submit">Daftar</button>
-        </a>
+    <div class="container">
 
-    </form>
-    <script src="index.js"></script>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Search</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container">
+                    <form action="/addpost" method="POST">
+                        <div class="form-group">
+                            <label for="name">Nama</label>
+                            <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda">
+                        </div>
+                        <div class="form-group">
+                            <label for="name_sch">Asal Sekolah</label>
+                            <input id="name_sch" class="form-control" type="text" name="name_sch" placeholder="Nama Sekolah">
+                        </div>
+                        <div class="form-group">
+                            <label for="no_hp">Nomor HP</label>
+                            <input id="no_hp" class="form-control" type="text" name="no_hp" placeholder="Nomor Handphone">
+                        </div>
+                        <div class="form-group">
+                            <label for="no_nisn">Nomor NISN</label>
+                            <input id="no_nisn" class="form-control" type="text" name="no_nisn" placeholder="Nomor NISN">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Daftar</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="container">
+                    <form action="/addpost" method="POST">
+                        <div class="form-group">
+                            <label for="name">Nama</label>
+                            <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Daftar</button>
+                    </form>
+                </div>
+            </div>
+          </div>
+    </div>
 
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>

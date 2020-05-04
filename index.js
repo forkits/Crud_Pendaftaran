@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const { check, validationResult } = require('express-validator');
+// const swal = require('sweetalert2');
 
 const app = express();
 
@@ -21,29 +23,32 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password : '',
-    database : 'data_siswa'
+    password: '',
+    database: 'data_siswa'
 })
 
 // connect
 db.connect((err) => {
-    if(err){
+    if (err) {
         console.log(err);
     }
     console.log('mysql connected ...');
 })
 
 // home
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.render('index.html')
+});
+app.get('/search', (req, res) => {
+    res.render('search.html')
 });
 
 // create db
-app.get('/createdb', (req, res) =>{
+app.get('/createdb', (req, res) => {
     let sql = 'CREATE DATABASE nodemysql';
-    db.query(sql, (err,result) => {
-        if(err) {
-           console.log(err);
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
         }
         console.log(result);
         res.send('database created ... ');
@@ -51,10 +56,10 @@ app.get('/createdb', (req, res) =>{
 });
 
 // create table
-app.get('/createpoststable', (req,res)=>{
+app.get('/createpoststable', (req, res) => {
     let sql = 'CREATE TABLE posts(id int(4) zerofill not null AUTO_INCREMENT, nama_peserta VARCHAR(255), nama_sekolah VARCHAR(255), no_hp VARCHAR(255), no_nisn VARCHAR(255), PRIMARY KEY (id))';
-    db.query(sql,(err, result)=>{
-        if(err) {
+    db.query(sql, (err, result) => {
+        if (err) {
             console.log(err);
         }
         console.log(result);
@@ -65,40 +70,48 @@ app.get('/createpoststable', (req,res)=>{
 // insert post 1
 
 let users = [];
-app.post('/addpost',urlencodedParser,(req,res)=>{
+app.post('/addpost', urlencodedParser, (req, res) => {
     users = ({
         nama_peserta: req.body.name,
         nama_sekolah: req.body.name_sch,
         no_hp: req.body.no_hp,
         no_nisn: req.body.no_nisn
     });
-    let sql = 'INSERT INTO posts SET ?';
-    let query = db.query(sql, users, (err, result)=>{
-        if(err) {
-            console.log(err);
-        }
-        console.log(result);
-        console.log(users)
-        res.send(users)
-    });
+    if(users.no_nisn === db.query(`SELECT * FROM posts WHERE no_nisn = ${users.no_nisn}`)){
+        console.log('data is same')
+    } else{
+        let sql = 'INSERT INTO posts SET ?';
+        let query = db.query(sql, users, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            // console.log(result);
+            // console.log(users)
+            // res.send(users)
+            setTimeout(function () {
+                res.redirect('/');
+             }, 3000);
+            
+        });
+    }
 });
 
 // Select Posts
-app.get('/getposts',(req,res)=>{
+app.get('/getposts', (req, res) => {
     let sql = 'SELECT * FROM posts';
-    let query = db.query(sql, (err, results)=>{
-        if(err) {
+    let query = db.query(sql, (err, results) => {
+        if (err) {
             console.log(err);
         }
         res.json(results);
     });
 });
 
-// Select a Post
-app.get('/getpost/:id',(req,res)=>{
+// Select a Post by id
+app.get('/getpost/:id', (req, res) => {
     let sql = `SELECT * FROM posts WHERE id = ${req.params.id}`;
-    let query = db.query(sql, (err, result)=>{
-        if(err) {
+    let query = db.query(sql, (err, result) => {
+        if (err) {
             console.log(err);
         }
         console.log(result);
@@ -106,12 +119,24 @@ app.get('/getpost/:id',(req,res)=>{
     });
 });
 
+// Select a post by nisn 
+app.get('/getpost/:no_nisn', (req, res) => {
+    let sql = `SELECT * FROM posts WHERE no_nisn = ${req.params.no_nisn}`;
+    let query = db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        res.send(result);
+    });
+});
+
 // Update Post
-app.get('/updatepost/:id',(req,res)=>{
+app.get('/updatepost/:id', (req, res) => {
     let newTitle = 'Update Title'
     let sql = `UPDATE posts SET title = '${newTitle}' WHERE id = ${req.params.id}`;
-    let query = db.query(sql, (err, result)=>{
-        if(err) {
+    let query = db.query(sql, (err, result) => {
+        if (err) {
             console.log(err);
         }
         console.log(result);
@@ -120,10 +145,10 @@ app.get('/updatepost/:id',(req,res)=>{
 });
 
 // delete Post
-app.get('/deletepost/:id',(req,res)=>{
+app.get('/deletepost/:id', (req, res) => {
     let sql = `DELETE FROM posts WHERE id = ${req.params.id}`;
-    let query = db.query(sql, (err, result)=>{
-        if(err) {
+    let query = db.query(sql, (err, result) => {
+        if (err) {
             console.log(err);
         }
         console.log(result);
