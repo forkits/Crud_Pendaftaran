@@ -8,34 +8,39 @@
 </head>
 <body>
     <div class="container">
-
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <h3 class="text-center">Selamat datang di Informasi Pendaftaran<br>SMKN 1 NGLEGOK</h3>
+        <h4 class="mb-1 mt-1">PPDB 2020 / 2021</h4>
+        <ul class="nav nav-tabs mt-4 mb-4" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><h5>Home</h5></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Search</a>
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><h5>Search</h5></a>
             </li>
           </ul>
-          <div class="tab-content" id="myTabContent">
+          <div class="tab-content mt-3" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="container">
                     <form action="/addpost" method="POST">
                         <div class="form-group">
                             <label for="name">Nama</label>
-                            <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda">
+                            <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda" required>
                         </div>
                         <div class="form-group">
                             <label for="name_sch">Asal Sekolah</label>
-                            <input id="name_sch" class="form-control" type="text" name="name_sch" placeholder="Nama Sekolah">
+                            <input id="name_sch" class="form-control" type="text" name="name_sch" placeholder="Nama Sekolah" required>
                         </div>
                         <div class="form-group">
                             <label for="no_hp">Nomor HP</label>
-                            <input id="no_hp" class="form-control" type="text" name="no_hp" placeholder="Nomor Handphone">
+                            <input id="no_hp" class="form-control" type="text" name="no_hp" placeholder="Nomor Handphone" required>
                         </div>
                         <div class="form-group">
                             <label for="no_nisn">Nomor NISN</label>
-                            <input id="no_nisn" class="form-control" type="text" name="no_nisn" placeholder="Nomor NISN">
+                            <input id="no_nisn" class="form-control" type="text" name="no_nisn" placeholder="Nomor NISN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reno_nisn">Masukkan Ulang Nomor NISN</label>
+                            <input id="reno_nisn" class="form-control" type="text" name="reno_nisn" placeholder="Comfirm Nomor NISN" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Daftar</button>
                         </a>
@@ -46,10 +51,15 @@
                 <div class="container">
                     <form action="/addpost" method="POST">
                         <div class="form-group">
-                            <label for="name">Nama</label>
-                            <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda">
+                            <label for="name"><h6>Cari Berdasarkan No Peserta Anda</h6></label> 
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="basic-addon3">ppdb2020 -</span>
+                                </div>
+                                    <input type="search" class="form-control" id="basic-url" name="searc_id" aria-describedby="basic-addon3" placeholder="0001">
+                                    <button class="btn btn-outline-primary mx-2 my-sm-0" type="submit">Search</button>
+                              </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Daftar</button>
                     </form>
                 </div>
             </div>

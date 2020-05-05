@@ -70,30 +70,34 @@ app.get('/createpoststable', (req, res) => {
 // insert post 1
 
 let users = [];
-app.post('/addpost', urlencodedParser, (req, res) => {
+// const _ = require("lodash");
+const { body } = require('express-validator');
+app.post('/addpost', body('no_nisn').isLength({ min: 6}).custom((value, { req }) => {
+    if (value !== req.body.reno_nisn) {
+        // users = null;
+      throw new Error('NISN confirmation does not match NISN');
+    } 
     users = ({
         nama_peserta: req.body.name,
         nama_sekolah: req.body.name_sch,
         no_hp: req.body.no_hp,
         no_nisn: req.body.no_nisn
     });
-    if(users.no_nisn === db.query(`SELECT * FROM posts WHERE no_nisn = ${users.no_nisn}`)){
-        console.log('data is same')
-    } else{
-        let sql = 'INSERT INTO posts SET ?';
-        let query = db.query(sql, users, (err, result) => {
+    return true;
+    }),
+    (req, res) => {
+    const errors = validationResult(req);
+    let sql = 'INSERT INTO posts SET ?';
+        let query = db.query(sql, users , (err, result) => {
             if (err) {
-                console.log(err);
+                console.log(errors);
             }
-            // console.log(result);
-            // console.log(users)
-            // res.send(users)
-            setTimeout(function () {
+            console.log(req.body);
+            // setTimeout(function () {
                 res.redirect('/');
-             }, 3000);
+            //  }, 3000);
             
         });
-    }
 });
 
 // Select Posts
@@ -108,28 +112,30 @@ app.get('/getposts', (req, res) => {
 });
 
 // Select a Post by id
-app.get('/getpost/:id', (req, res) => {
+app.get('/:id', (req, res) => {
     let sql = `SELECT * FROM posts WHERE id = ${req.params.id}`;
     let query = db.query(sql, (err, result) => {
         if (err) {
             console.log(err);
         }
-        console.log(result);
-        res.send('posts fetch');
+        // console.log(result);
+        res.json(result);
     });
+
+    // console.log(query);
 });
 
 // Select a post by nisn 
-app.get('/getpost/:no_nisn', (req, res) => {
-    let sql = `SELECT * FROM posts WHERE no_nisn = ${req.params.no_nisn}`;
-    let query = db.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(result);
-        res.send(result);
-    });
-});
+// app.get('/:no_nisn', (req, res) => {
+//     let sql = `SELECT * FROM posts WHERE no_nisn = ${req.params.no_nisn}`;
+//     let query = db.query(sql, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log(result);
+//         res.json(result);
+//     });
+// });
 
 // Update Post
 app.get('/updatepost/:id', (req, res) => {
