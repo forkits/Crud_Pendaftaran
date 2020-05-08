@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Nomor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                    <a class="nav-item nav-link active text-light" href="/">Ambil Nomor <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link text-light" href="/search">Cari Nomor</a>
+                  </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container text-center">
+        <h3>Selamat datang di Pengambilan Nomor <br> SMKN 1 NGLEGOK</h3>
+    </div>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="name"><h6>Cari Berdasarkan No Peserta Anda</h6></label> 
+                <div class="input-group mb-3">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" id="search-id" type="search" placeholder="Masukkan Nomor NISN anda" aria-label="Search">
+                        <button class="btn btn-outline-primary mx-2 my-sm-0" id="myBtn" onclick="fetchId()" type="button">Search</button>
+                    </form>
+                </div>
+            </div>
+        </form>
+        <div id="hasil_search">
+        </div>
+    </div>
+
+    <script>
+        
+        function fetchId(){
+            const id_nilai = document.getElementById("search-id").value;
+            const hasil = document.getElementById("hasil_search");
+            fetch(`http://localhost:3000/search/${id_nilai}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                data_siswa = data.map((id_siswa)=>{
+                    return `
+                            <div>ppdb2020-${id_siswa.id}</div>
+                            <div>nama : ${id_siswa.nama_peserta}</div>
+                            <div>asal : ${id_siswa.nama_sekolah}</div>
+                            <div>nomor hp : ${id_siswa.no_hp}</div>
+                            <div>nomor NISN : ${id_siswa.no_nisn}</div>
+                        `
+                    }
+                ).join("");
+                hasil.insertAdjacentHTML("afterbegin", data_siswa);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
