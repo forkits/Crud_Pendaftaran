@@ -88,10 +88,9 @@ app.post('/addpost', urlencodedParser,(req, res) => {
         let query = db.query(sql, users , (err, result) => {
             if (err) {
                 console.log("No NISN sudah terdaftar");
-                // req.send('No NISN sudah terdaftar')
             }
             console.log(req.body);
-                res.redirect('/nomor');
+            // res.end();
             });
 });
 
@@ -124,7 +123,68 @@ app.get('/search/:no_nisn', (req, res) => {
         if (err) {
             console.log(err);
         }
-        res.json(result);
+        // let id_siswa;
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write(`<html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Nomor Anda</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        </head>
+        <body>
+            <header>
+                <nav class="navbar navbar-light bg-primary">
+                    <div class="container">
+                        <div class="d-flex">
+                          <div class="navbar-nav">
+                            <a class="nav-item nav-link active text-light" href="/">Ambil Nomor <span class="sr-only">(current)</span></a>
+                            <a class="nav-item nav-link text-light" href="/search">Cari Nomor</a>
+                          </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div class="container text-center">
+                <h3>Selamat datang di Pengambilan Nomor <br> SMKN 1 NGLEGOK</h3>
+                
+            </div>
+            <div class="container">
+                <div id="nomor-id">
+                    
+                </div>
+            </div>
+
+            <script type='text/javascript'>
+                const hasil = document.getElementById("nomor-id");
+                fetch('http://localhost:3000/nomor/${req.params.no_nisn}')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    data_siswa = data.map((id_siswa)=>{
+                        return \`
+                                <div>ppdb2020-\${id_siswa.id}</div>
+                                <div>nama : \${id_siswa.nama_peserta}</div>
+                                <div>asal : \${id_siswa.nama_sekolah}</div>
+                                <div>nomor hp : \${id_siswa.no_hp}</div>
+                                <div>nomor NISN : \${id_siswa.no_nisn}</div>
+                            \`
+                        \}
+                    ).join("");
+                    hasil.insertAdjacentHTML("afterbegin", data_siswa);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        </body>
+        </html>`);
+        res.json();
+        res.end();
     });
 });
 

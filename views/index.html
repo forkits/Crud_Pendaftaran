@@ -8,10 +8,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <nav class="navbar navbar-light bg-primary">
             <div class="container">
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                  <div class="navbar-nav">
+                <div class="d-flex">
+                  <div class="d-flex">
                     <a class="nav-item nav-link active text-light" href="/">Ambil Nomor <span class="sr-only">(current)</span></a>
                     <a class="nav-item nav-link text-light" href="/search">Cari Nomor</a>
                   </div>
@@ -25,56 +25,58 @@
     <div class="container">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="container">
-                <form action="/addpost" method="POST">
+                <form action="/addpost" method="POST" id="myForm">
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
-                        <input id="name" class="form-control" type="text" name="name" placeholder="Nama Anda" required>
+                        <input id="name" class="form-control" class="input" type="text" name="name" placeholder="Nama Anda" required>
                     </div>
                     <div class="form-group">
                         <label for="name_sch">Asal Sekolah</label>
-                        <input id="name_sch" class="form-control" type="text" name="name_sch" placeholder="Nama Sekolah" required>
+                        <input id="name_sch" class="form-control" class="input" type="text" name="name_sch" placeholder="Nama Sekolah" required>
                     </div>
                     <div class="form-group">
                         <label for="no_hp">Nomor HP</label>
-                        <input id="no_hp" class="form-control" type="text" name="no_hp" placeholder="Nomor Handphone" required>
+                        <input id="no_hp" class="form-control" class="input" type="text" name="no_hp" placeholder="Nomor Handphone" required>
                     </div>
                     <div class="form-group">
                         <label for="no_nisn">Nomor NISN</label>
-                        <input id="no_nisn" class="form-control" type="text" name="no_nisn" placeholder="Nomor NISN" required>
+                        <input id="no_nisn" class="form-control" class="input" type="text" name="no_nisn" placeholder="Nomor NISN" required>
                     </div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Daftar</button>
+                    <button type="submit" onclick="linkBtn()" class="btn btn-primary">Daftar</button>
+                    <a id="link-nisn" target="_blank" onclick="linkNomor()" class="btn btn-success text-light">
+                      Lihat Nomor
                     </a>
-                </form>
+                  </form>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                hallo
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <script>
-          const nisn = document.getElementById("no_nisn").value;
-          const bModal = document.getElementsByClassName("modal-body").innerHTML(nisn);
+    <script>
+      function linkBtn(){
+        const nisn = document.getElementById("no_nisn").value;
+        const linkNisn= document.getElementById("link-nisn");
 
-         console.log(bModal)
-      </script>
+        linkNisn.setAttribute("href",`http://localhost:3000/search/${nisn}`)
+        if (nisn !== null){
+          // window.stop();
+          setTimeout(
+            function resetForm(){
+              alert('terima kasih sudah mendaftar');
+              document.getElementById("myForm").reset();
+            },3000
+          )
+        }
+      }
+      function linkNomor(){
+        const linkNisn= document.getElementById("link-nisn").getAttribute('href');
+        if (linkNisn === null){
+          alert('anda belum mendaftar');
+        }
+      }
+    </script>
 
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
