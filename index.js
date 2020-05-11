@@ -163,11 +163,30 @@ app.get('/search/:no_nisn', (req, res) => {
                     console.log(data);
                     data_siswa = data.map((id_siswa)=>{
                         return \`
-                                <div>ppdb2020-\${id_siswa.id}</div>
-                                <div>nama : \${id_siswa.nama_peserta}</div>
-                                <div>asal : \${id_siswa.nama_sekolah}</div>
-                                <div>nomor hp : \${id_siswa.no_hp}</div>
-                                <div>nomor NISN : \${id_siswa.no_nisn}</div>
+                                <div class="border border-primary rounded mb-3">
+                                <div class="m-3"> 
+                                    <h3 class="text-center text-primary">Ini Nomor dari peserta <strong>\${id_siswa.nama_peserta}</strong></h3>
+                                    <h4 class="mb-2 mt-1 text-center">ppdb2020-\${id_siswa.id}</h4>
+                                    <hr>
+                                    <h5>Detail :</h5>
+                                    <div class="d-flex ml-4">
+                                        <h6 class="mb-2 w-25">Nama</h6>
+                                        <h6>: \${id_siswa.nama_peserta}</h6>
+                                    </div>
+                                    <div class="d-flex ml-4">
+                                        <h6 class="mb-2 w-25">Asal Sekolah</h6>
+                                        <h6>: \${id_siswa.nama_sekolah}</h6>
+                                    </div>
+                                    <div class="d-flex ml-4">
+                                        <h6 class="mb-2 w-25">Nomor HandPhone</h6>
+                                        <h6>: \${id_siswa.no_hp}</h6>
+                                    </div>
+                                    <div class="d-flex ml-4">
+                                        <h6 class="mb-2 w-25">Nomor NISN</h6>
+                                        <h6>: \${id_siswa.no_nisn}</h6>
+                                    </div>
+                                </div>
+                            </div>
                             \`
                         \}
                     ).join("");
